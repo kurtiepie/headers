@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-      APP = 'Headers'
+      APP = 'headers'
       VERSION = "0.0.1"
       GIT_HASH = """${sh(
                     returnStdout: true,
@@ -46,4 +46,3 @@ pipeline {
         } 
     }
 }
-
