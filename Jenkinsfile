@@ -1,9 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+      PROJECT_NAME = 'Headers'
+    }
+
     stages {
         stage('Remote Code Repo Scan') {
           steps {
+            echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
             sh "trivy repo --exit-code 192 https://github.com/kurtiepie/headers.git"
           }
         }
@@ -17,7 +22,7 @@ pipeline {
               sh "make build"
             }
         }
-        stage('Scan Generated Image Docker Image') {
+        stage('Scan Generated Image Docker') {
             steps {
               echo "Scan image..."
             }
