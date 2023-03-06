@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                echo 'whats up from headers'
+              sh "make help"
             }
         }
     }
