@@ -3,12 +3,17 @@ pipeline {
 
     environment {
       PROJECT_NAME = 'Headers'
+      GIT_HASH = """${sh(
+                    returnStdout: true,
+                    script: 'git rev-parse --short HEAD'
+                    )}"""
     }
 
     stages {
         stage('Remote Code Repo Scan') {
           steps {
             echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+            echo "Git HASH ${GIT_HASH}"
             sh "trivy repo --exit-code 192 https://github.com/kurtiepie/headers.git"
           }
         }
