@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-      PROJECT_NAME = 'Headers'
+      APP = 'Headers'
       GIT_HASH = """${sh(
                     returnStdout: true,
                     script: 'git rev-parse --short HEAD'
@@ -13,7 +13,6 @@ pipeline {
         stage('Remote Code Repo Scan') {
           steps {
             echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-            echo "Git HASH ${GIT_HASH}"
             sh "trivy repo --exit-code 192 https://github.com/kurtiepie/headers.git"
           }
         }
@@ -24,17 +23,17 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-              sh "make build"
+              sh "docker build -t ${APP}:${GIT_HASH} ."
             }
         }
         stage('Scan Generated Image Docker') {
             steps {
-              echo "Scan image..."
+              sh "trivy --exit-code 192 image ${APP}:${GIT_HASH}"
             }
         }
         stage('Push Docker Image') {
             steps {
-              echo "Pushing image"
+              echo "docker push ${APP}:${GIT_HASH}"
             }
         } 
         stage('Scan Helm IAC FILES') {
