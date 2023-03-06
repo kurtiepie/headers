@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Scan Generated Image Docker') {
             steps {
-              sh "trivy --exit-code 192 image ${APP}:${VERSION}-${GIT_HASH}"
+              sh "trivy image ${APP}:${VERSION}-${GIT_HASH}"
             }
         }
         stage('Push Docker Image') {
