@@ -29,7 +29,7 @@ pipeline {
         } 
         stage('Scan Helm IAC FILES') {
             steps {
-              sh "template headerschart/ > temp.yaml"
+              sh "helm template headerschart/ > temp.yaml"
               sh "trivy --severity HIGH,CRITICAL --exit-code 192 config ./temp.yaml"
               sh "rm ./temp.yaml"
             }
