@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-              sh "docker build -t ${APP}:${GIT_HASH} ."
+              sh "docker build . -t ${APP}:${GIT_HASH}"
             }
         }
         stage('Scan Generated Image Docker') {
