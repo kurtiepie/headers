@@ -3,6 +3,7 @@ pipeline {
 
     environment {
       APP = 'Headers'
+      VERSION = "0.0.1"
       GIT_HASH = """${sh(
                     returnStdout: true,
                     script: 'git rev-parse --short HEAD'
@@ -23,17 +24,17 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-              sh "docker build . -t ${APP}:${GIT_HASH}"
+              sh "docker build . -t ${APP}:${VERSION}-${GIT_HASH}"
             }
         }
         stage('Scan Generated Image Docker') {
             steps {
-              sh "trivy --exit-code 192 image ${APP}:${GIT_HASH}"
+              sh "trivy --exit-code 192 image ${APP}:${VERSION}-${GIT_HASH}"
             }
         }
         stage('Push Docker Image') {
             steps {
-              echo "docker push ${APP}:${GIT_HASH}"
+              sh "docker push ${APP}:${VERSION}-${GIT_HASH}"
             }
         } 
         stage('Scan Helm IAC FILES') {
