@@ -33,11 +33,14 @@ pipeline {
               sh "trivy image ${APP}:${VERSION}-${GIT_HASH}"
             }
         }
-        stage('Push Docker Image') {
+        stage('Push Docker Image to docker hub') {
+            when {
+              branch "main"
+            }
             steps {
-              echo "docker push ${APP}:${VERSION}-${GIT_HASH}"
               sh 'docker tag ${APP}:${VERSION}-${GIT_HASH} kvad/headers:0.0.2'
-              sh 'echo $dockerhub_USR'
+              sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+              sh 'docker push kvad/headers:0.0.2'
             }
         } 
         stage('Scan Helm IAC FILES') {
