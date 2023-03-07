@@ -36,6 +36,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
               echo "docker push ${APP}:${VERSION}-${GIT_HASH}"
+              sh 'docker tag ${APP}:${VERSION}-${GIT_HASH} kvad/headers:0.0.2'
+              sh 'echo $dockerhub_USR'
             }
         } 
         stage('Scan Helm IAC FILES') {
