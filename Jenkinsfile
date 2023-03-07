@@ -8,6 +8,7 @@ pipeline {
                     returnStdout: true,
                     script: 'git rev-parse --short HEAD'
                     )}"""
+    dockerhub=credentials('dockerhub')
     }
 
     stages {
@@ -34,7 +35,7 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps {
-              sh "docker push ${APP}:${VERSION}-${GIT_HASH}"
+              echo "docker push ${APP}:${VERSION}-${GIT_HASH}"
             }
         } 
         stage('Scan Helm IAC FILES') {
