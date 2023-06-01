@@ -3,6 +3,7 @@ pipeline {
 
     environment {
       APP = 'headers'
+      AUTHOR = 'kurtis'
       VERSION = "0.0.1"
       GIT_HASH = """${sh(
                     returnStdout: true,
@@ -12,6 +13,10 @@ pipeline {
     }
 
     stages {
+        stage('Check Out SCM') {
+          steps {
+            checkout scm
+          }
         stage('Remote Code Repo Scan') {
           steps {
             echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
