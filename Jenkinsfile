@@ -1,17 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-      APP = 'headers'
-      AUTHOR = 'kurtis'
-      VERSION = "0.0.1"
-      GIT_HASH = """${sh(
-                    returnStdout: true,
-                    script: 'git rev-parse --short HEAD'
-                    )}"""
-    dockerhub=credentials('dockerhub')
-    }
-
     stages {
         stage('Check Out SCM') {
          steps {
