@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Push Docker Image to docker hub') {
             steps {
-              sh 'echo docker tag ${APP}:${VERSION} kvad/${APP}:${VERSION}'
+              sh 'docker tag ${APP}:${VERSION} kvad/${APP}:${VERSION}'
               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
               sh 'docker push kvad/${APP}:${VERSION}'
             }
