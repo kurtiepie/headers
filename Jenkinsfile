@@ -1,7 +1,7 @@
 pipeline {
     agent any
       environment {
-      APP = 'headers'
+      APP = "headers"
       VERSION = "0.0.4"
       DOCKERHUB_CREDENTIALS=credentials('DOCKERHUB')
     }
