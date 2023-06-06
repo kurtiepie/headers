@@ -17,9 +17,14 @@ pipeline {
               sh "docker build . -t ${APP}:${VERSION}"
             }
         }
-        stage('Scan Generated Image Docker') {
+        stage('Trivy | Scan Generated Image Docker') {
             steps {
               sh "trivy image ${APP}:${VERSION}"
+            }
+        }
+        stage('Trivy | Scan Helm Charts') {
+            steps {
+              sh "trivy -d config --severity HIGH,CRITICAL ."
             }
         }
         stage('Push Docker Image to docker hub') {
