@@ -1,6 +1,9 @@
 pipeline {
     agent any
-
+      environment {
+      APP = 'headers'
+      VERSION = "0.0.1"
+    }
     stages {
         stage('Remote Code Repo Scan') {
           steps {
@@ -8,34 +11,21 @@ pipeline {
             sh "trivy repo --exit-code 192 https://github.com/kurtiepie/headers.git"
           }
         }
-//        stage('Code Base Scan') {
-//          steps {
-//            sh "ls -la"
-//            sh "trivy -d fs --exit-code 0 --severity HIGH,CRITICAL --skip-dirs ssl ."
-//          }
-//        }
         stage('Docker Build') {
             steps {
-              sh "docker build . -t ${APP}:${VERSION}-${GIT_HASH}"
+              sh "docker build . -t ${APP}:${VERSION}"
             }
         }
         stage('Scan Generated Image Docker') {
             steps {
-              sh "trivy image ${APP}:${VERSION}-${GIT_HASH}"
+              sh "trivy image ${APP}:${VERSION}"
             }
         }
         stage('Push Docker Image to docker hub') {
             steps {
-              sh 'echo docker tag ${APP}:${VERSION}-${GIT_HASH} kvad/headers:0.0.2'
+              sh 'echo docker tag ${APP}:${VERSION} kvad/headers:0.0.2'
               sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
               sh 'docker push kvad/headers:0.0.2'
-            }
-        } 
-        stage('Scan Helm IAC FILES') {
-            steps {
-              sh "helm template headerschart/ > temp.yaml"
-              sh "trivy --severity HIGH,CRITICAL --exit-code 192 config ./temp.yaml"
-              sh "rm ./temp.yaml"
             }
         } 
     }
