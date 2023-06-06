@@ -10,7 +10,8 @@ pipeline {
         }
         stage('Code Base Scan') {
           steps {
-            sh "trivy fs --exit-code 192 --severity HIGH,CRITICAL --skip-dirs ssl ."
+            sh "ls -la"
+            sh "trivy -d fs --exit-code 192 --severity HIGH,CRITICAL --skip-dirs ssl ."
           }
         }
         stage('Docker Build') {
