@@ -2,18 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Check Out SCM') {
-         steps {
-           dir("neptune"){
-             git(
-                        url: "https://github.com/kurtiepie/headers.git",
-                        branch: "main",
-                        changelog: true,
-                        poll: true
-             )
-           }
-            
-         }
         stage('Remote Code Repo Scan') {
           steps {
             echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
