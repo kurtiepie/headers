@@ -8,12 +8,12 @@ pipeline {
             sh "trivy repo --exit-code 192 https://github.com/kurtiepie/headers.git"
           }
         }
-        stage('Code Base Scan') {
-          steps {
-            sh "ls -la"
-            sh "trivy -d fs --exit-code 0 --severity HIGH,CRITICAL --skip-dirs ssl ."
-          }
-        }
+//        stage('Code Base Scan') {
+//          steps {
+//            sh "ls -la"
+//            sh "trivy -d fs --exit-code 0 --severity HIGH,CRITICAL --skip-dirs ssl ."
+//          }
+//        }
         stage('Docker Build') {
             steps {
               sh "docker build . -t ${APP}:${VERSION}-${GIT_HASH}"
