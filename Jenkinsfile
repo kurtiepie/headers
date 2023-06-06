@@ -2,7 +2,8 @@ pipeline {
     agent any
       environment {
       APP = 'headers'
-      VERSION = "0.0.1"
+      VERSION = "0.0.4"
+      DOCKERHUB_CREDENTIALS=credentials('DOCKERHUB')
     }
     stages {
         stage('Remote Code Repo Scan') {
@@ -24,8 +25,8 @@ pipeline {
         stage('Push Docker Image to docker hub') {
             steps {
               sh 'echo docker tag ${APP}:${VERSION} kvad/headers:0.0.2'
-              sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
-              sh 'docker push kvad/headers:0.0.2'
+              sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+              sh 'docker push kvad/${APP}:${VERSION}'
             }
         } 
     }
